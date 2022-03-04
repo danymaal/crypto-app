@@ -1,29 +1,35 @@
-import React, { FC } from 'react'
-import CoinItem from './CoinItem'
+import React, { FC, useState } from 'react';
+import CoinItem from './CoinItem';
+import ICoinItem from '../types'
 
-interface ICoinItem {
-    id?: string
-    symbol: string
-    name: string
-    ath: number
-    atl: number
-    current_price: number
-    image: any
-}
+
 
 interface ICoinList {
-    coins: ICoinItem[]
-    childer?: any
+  coins: ICoinItem[];
+  childer?: any;
 }
 
-const CoinList: FC<ICoinList> = ({coins, children}) => {
+const CoinList: FC<ICoinList> = ({ coins, children }) => {
+  const [search, setSearch] = useState('');
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const filteredCoins = coins.filter(coin =>
+    coin.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
     <div>
-        {coins.map((coin) => 
-          <CoinItem coin = {coin} key =  {coin.id}  />
-        )}
+      <form className='form'>
+        <input type='text' placeholder='Serch coin' className='input' onChange={changeHandler} />
+      </form>
+      {filteredCoins.map(coin => (
+        <CoinItem coin={coin} key={coin.id} />
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default CoinList
+export default CoinList;

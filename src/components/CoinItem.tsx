@@ -1,14 +1,8 @@
 import React, { FC } from 'react';
+import '../scss/CoinItem.scss';
+import ICoinItem from '../types';
 
-interface ICoinItem {
-  id?: string;
-  symbol: string;
-  name: string;
-  ath: number;
-  atl: number;
-  current_price: number;
-  image: any;
-}
+
 
 interface ICoinList {
   coin: ICoinItem;
@@ -17,12 +11,28 @@ interface ICoinList {
 const CoinItem: FC<ICoinList> = ({ coin }) => {
   return (
     <div>
-      <img src={coin.image}></img>
-      <h1>{coin.symbol}</h1>
-      <h1>{coin.name}</h1>
-      <h1>{coin.ath}</h1>
-      <h1>{coin.atl}</h1>
-      <h1>{coin.current_price}</h1>
+      <div className='coin-container'>
+        <div className='coin-conitainer__row'>
+          <div className='coin'>
+            <img src={coin.image} alt='coin image' />
+            <h1>{coin.name}</h1>
+            <p className='coin-symbol'>{coin.symbol}</p>
+          </div>
+          <div className='coin-data'>
+            <p className='coin-price'>${coin.current_price}</p>
+            <p className='coin-marketcap'>Cap: {coin.market_cap}</p>
+            {coin.market_cap_change_percentage_24h < 0 ? (
+              <p className='coin-percent red'>
+                {coin.market_cap_change_percentage_24h.toFixed(2)}%
+              </p>
+            ) : (
+              <p className='coin-percent green'>
+                {coin.market_cap_change_percentage_24h.toFixed(2)}%
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
